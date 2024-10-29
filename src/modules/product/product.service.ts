@@ -1,6 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ProductDto } from "src/dto/product.dto";
 import { Product } from "src/models/product.model";
+import { StoreConfigService } from "../../config/Store-config.service";
+import { LoggerService } from "../../config/Logger.Service";
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -8,24 +10,39 @@ import * as path from 'path';
 export class ProductService{
     
     private product: Product[];
-
-    constructor() {
+    
+    constructor(
+        @Inject('ConfigService') private configService: StoreConfigService,
+        @Inject('AliasedLoggerService') private logger: LoggerService
+    ) {
         this.loadProducts();
     }
+    // khi sử dụng useExisting
+    // private loadProducts(): void {
+    //     const filePath = path.join(__dirname, 'data.json'); 
+    //     try {
+    //         const jsonData = fs.readFileSync(filePath, 'utf8');
+    //         this.product = JSON.parse(jsonData)['product'];
+    //         this.logger.log('Store Config: ' + this.configService.getConfig());
+    //         this.logger.log('Data: ' + JSON.stringify(this.product));
+    //     } catch (error) {
+    //         this.product = [];
+    //     }
+    // }
     private loadProducts(): void {
-        const filePath = path.join(__dirname, '/data.json'); 
-        try{
+        const filePath = path.join(__dirname, 'data.json'); 
+        try {
             const jsonData = fs.readFileSync(filePath, 'utf8');
             this.product = JSON.parse(jsonData)['product'];
-        }catch(error){
-            console.error("loi doc file", error)
+            console.log('Store Config:',this.configService.getConfig())
+            console.log('Data:',this.product);
+        } catch (error) {
             this.product = [];
         }
-        
     }
 
     private saveProducts() : void{
-        const filePath = path.join(__dirname, '/data.json');
+        const filePath = path.join(__dirname, 'data.json');
         const data = JSON.stringify({'product' : this.product},null,2)
         try {
             fs.writeFileSync(filePath, data, 'utf8');

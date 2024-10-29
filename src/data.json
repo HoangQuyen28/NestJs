@@ -1,0 +1,22 @@
+{
+    "product": [
+      {
+        "id": 1,
+        "name": "chuot",
+        "categoryId": 101,
+        "price": 29.99
+      },
+      {
+        "id": 2,
+        "name": "Ban phim",
+        "categoryId": 102,
+        "price": 39.99
+      },
+      {
+        "id": 3,
+        "name": "Tai nghe",
+        "categoryId": 103,
+        "price": 49.99
+      }
+    ]
+  }
