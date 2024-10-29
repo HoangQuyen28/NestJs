@@ -12,7 +12,9 @@ export class ProductService{
     private product: Product[];
     
     constructor(
+        // Inject service config
         @Inject('ConfigService') private configService: StoreConfigService,
+        // Inject logger
         @Inject('AliasedLoggerService') private logger: LoggerService
     ) {
         this.loadProducts();
